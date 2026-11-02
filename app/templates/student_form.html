@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ "Edit" if mode == "edit" else "Add" }} Student &middot; Student Management
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{{ "Edit Student" if mode == "edit" else "Add Student" }}</h1>
+
+<form
+    class="student-form"
+    method="post"
+    action="{% if mode == 'edit' %}{{ url_for('main.edit_student', student_id=student.id) }}{% else %}{{ url_for('main.add_student') }}{% endif %}"
+    novalidate
+>
+    <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{ student.name or '' }}" required>
+        {% if errors.name %}<span class="field-error">{{ errors.name }}</span>{% endif %}
+    </div>
+
+    <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ student.email or '' }}" required>
+        {% if errors.email %}<span class="field-error">{{ errors.email }}</span>{% endif %}
+    </div>
+
+    <div class="field">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" min="1" max="150" value="{{ student.age or '' }}" required>
+        {% if errors.age %}<span class="field-error">{{ errors.age }}</span>{% endif %}
+    </div>
+
+    <div class="field">
+        <label for="course">Course</label>
+        <input type="text" id="course" name="course" value="{{ student.course or '' }}" required>
+        {% if errors.course %}<span class="field-error">{{ errors.course }}</span>{% endif %}
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">
+            {{ "Save Changes" if mode == "edit" else "Add Student" }}
+        </button>
+        <a class="btn-secondary" href="{{ url_for('main.list_students') }}">Cancel</a>
+    </div>
+</form>
+{% endblock %}
