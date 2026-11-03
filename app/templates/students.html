@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Students &middot; Student Management{% endblock %}
+
+{% block content %}
+<div class="list-header">
+    <h1 class="page-title">Students</h1>
+    <a class="btn-primary" href="{{ url_for('main.add_student') }}">+ Add Student</a>
+</div>
+
+<div class="search-bar">
+    <input
+        type="search"
+        id="search-input"
+        placeholder="Search by name, email, or course..."
+        value="{{ query }}"
+        autocomplete="off"
+    >
+    <span id="search-count" class="muted"></span>
+</div>
+
+<div class="table-wrapper">
+    <table class="student-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th class="actions-col">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="student-tbody">
+            {% for s in students %}
+                <tr data-id="{{ s.id }}">
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.email }}</td>
+                    <td>{{ s.age }}</td>
+                    <td>{{ s.course }}</td>
+                    <td class="actions-col">
+                        <a class="btn-sm" href="{{ url_for('main.edit_student', student_id=s.id) }}">Edit</a>
+                        <button class="btn-sm btn-danger" data-delete="{{ s.id }}" data-name="{{ s.name }}">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p id="empty-message" class="muted empty-message" {% if students %}hidden{% endif %}>
+        No students found.
+    </p>
+</div>
+{% endblock %}

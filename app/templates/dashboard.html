@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard &middot; Student Management{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Dashboard</h1>
+
+<section class="stat-grid">
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.total_students }}</span>
+        <span class="stat-label">Total Students</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.total_courses }}</span>
+        <span class="stat-label">Courses</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ stats.average_age }}</span>
+        <span class="stat-label">Average Age</span>
+    </div>
+</section>
+
+<div class="dashboard-columns">
+    <section class="panel">
+        <h2>Students per Course</h2>
+        {% if stats.per_course %}
+            <ul class="course-list">
+                {% for row in stats.per_course %}
+                    <li>
+                        <span>{{ row.course }}</span>
+                        <span class="badge">{{ row.count }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">No courses yet.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <h2>Recently Added</h2>
+        {% if stats.recent_students %}
+            <ul class="recent-list">
+                {% for s in stats.recent_students %}
+                    <li>
+                        <strong>{{ s.name }}</strong>
+                        <span class="muted">{{ s.course }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">No students yet. <a href="{{ url_for('main.add_student') }}">Add one</a>.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
